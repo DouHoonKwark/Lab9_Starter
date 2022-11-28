@@ -86,22 +86,163 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+     window.TrackJS && TrackJS.install({ 
+    token: "55ef36c72f05487fa116a0060a5ce4f2"});
+
+    TrackJS.track('Testing TrackJS!');
+
+    window.addEventListener("error", (event) => {
+      console.log('Sadly an error happened my friend');
+    });
+
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+
+        if (!firstNum || !secondNum ) {
+          throw new wrongInput('cannot use space');
+        }
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw 'input is not a number';
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      } catch(err) {
+        console.error(err);
+      } finally {
+        console.log('operation is done');
+      }
     });
+
+    class wrongInput extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "wrongInput";
+      }
+    }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    // button for console log
+    const consoleLog = document.querySelectorAll('button')[1];
+
+    consoleLog.addEventListener('click', () => {
+      console.log('Console Log Demo');
+    });
+
+    // button for console error
+    const consoleError = document.querySelectorAll('button')[2];
+    consoleError.addEventListener('click', ()=> {
+      console.error('Console Error Demo');
+    });
+
+    // button for console count
+    let counter = 0;
+    const consoleCount = document.querySelectorAll('button')[3];
+    consoleCount.addEventListener('click', () => {
+      counter += 1;
+      console.log('Count Button: ' + counter);
+    });
+
+    // button for console warn
+    const consoleWarn = document.querySelectorAll('button')[4];
+    consoleWarn.addEventListener('click', () => {
+      console.warn('Console Warn Button');
+    });
+
+    // button for console assert
+    const consoleAssert = document.querySelectorAll('button')[5];
+    consoleAssert.addEventListener('click', () => {
+      const errorMsg = 'the number does not equal to 3';
+      const number = 2;
+      console.assert(number === 3, '%o', { number, errorMsg});
+    });
+
+    // button for console clear
+    const consoleClear = document.querySelectorAll('button')[6];
+    consoleClear.addEventListener('click', () => {
+      console.clear();
+    });
+
+    // button for console dir
+    const consoleDir = document.querySelectorAll('button')[7];
+    consoleDir.addEventListener('click', () => {
+      console.dir(consoleDir);
+    });
+
+    // button for console dirxml
+    const consoleDirxml = document.querySelectorAll('button')[8];
+    consoleDirxml.addEventListener('click', () => {
+      console.dirxml(consoleDirxml);
+    });
+
+    // button for group start
+    const consoleStart = document.querySelectorAll('button')[9];
+    consoleStart.addEventListener('click', () => {
+      console.group();
+    });
+
+    // button for group end
+    const consoleEnd = document.querySelectorAll('button')[10];
+    consoleEnd.addEventListener('click', () => {
+      console.groupEnd();
+    });
+
+    // button for console table
+    const consoleTable = document.querySelectorAll('button')[11];
+    consoleTable.addEventListener('click', () => {
+      const classContent = [
+        ['Software Engineering', 110],
+        ['Programming Language', 130],
+        ['Advanced Software Engineering', 112],
+      ];
+      console.table(classContent);
+    });
+
+    // button for console start timer
+    const consoleTimeStart = document.querySelectorAll('button')[12];
+    consoleTimeStart.addEventListener('click', () => {
+      console.time();
+    });
+
+    // button for console end timer
+    const consoleTimeEnd = document.querySelectorAll('button')[13];
+    consoleTimeEnd.addEventListener('click', () => {
+      console.timeEnd();
+    });
+
+    // button for console trace
+    const consoleTrace = document.querySelectorAll('button')[14];
+    consoleTrace.addEventListener('click', function handleBtnClick(){
+        function deep() {
+          function deeper() {
+            function deepest() {
+              console.trace();
+            }
+            deepest();
+          }
+          deeper();
+        }
+        deep();
+    });
+
+    // button for global error
+    const consoleGlobalError = document.querySelectorAll('button')[15];
+    consoleGlobalError.addEventListener('click', () => {
+      console.log(boom);
+      
+    });
   </script>
 </body>
 
